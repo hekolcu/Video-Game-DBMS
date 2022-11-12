@@ -1,0 +1,14 @@
+
+.idea/modules.xml
+.idea/dataSources.xml
+*.xml
+.idea/Sample Application-20221110.iml
+__pycache__/AssnCl31_Gui2.cpython-310.pyc
+__pycache__/PageOne.cpython-310.pyc
+__pycache__/PageTwo.cpython-310.pyc
+__pycache__/VideoGamesData.cpython-310.pyc
+AssnCl31_Gui1.py
+AssnCl31_Gui2.py
+PageOne.py
+PageTwo.py
+tutorial.db
