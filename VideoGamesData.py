@@ -10,8 +10,10 @@ games = [
             "Restrictions": "18+",
             "requirements": "2.5 GHz 2 Core processor, 4 GB RAM, 1GB Graphics card",
             "link": "https://www.counter-strike.net",
-            "creators": "Jess Cliffe"
-         },
+            "creators": "Jess Cliffe",
+            "rating": 3.8,
+            "ratingCount": "309"
+        },
         {
             "title": "Pokémon Red/Green",
             "description": "Pokémon is a Japanese media franchise managed by The Pokémon Company",
@@ -23,6 +25,8 @@ games = [
             "Restrictions": "13+",
             "requirements": "NA",
             "link": "https://www.pokemon.com/",
-            "creators": "Satoshi Tajiri;Ken Sugimori;Junichi Masuda"
+            "creators": "Satoshi Tajiri;Ken Sugimori;Junichi Masuda",
+            "rating": 4.1,
+            "ratingCount": "872"
         }
     ]
