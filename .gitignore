@@ -12,3 +12,5 @@ AssnCl31_Gui2.py
 PageOne.py
 PageTwo.py
 tutorial.db
+__pycache__/BriefGame.cpython-310.pyc
+*.pyc
