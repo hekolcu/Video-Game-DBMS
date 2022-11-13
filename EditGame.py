@@ -1,5 +1,5 @@
 import tkinter as tk
-from BriefGame import BriefGame
+from Games import Games
 
 
 class EditGame:
@@ -27,5 +27,4 @@ class EditGame:
 
     def back_to_brief(self):
         self.mainframe.destroy()
-        BriefGame(self.master, self.games, self.current_game)
-
+        Games(self.master, self.games, self.current_game)

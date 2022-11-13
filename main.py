@@ -1,11 +1,11 @@
 import tkinter as tk
-from BriefGame import BriefGame
+from Games import Games
 
 
 def main():
     from VideoGamesData import games
     root = tk.Tk()
-    BriefGame(root, games)
+    Games(root, games)
     root.mainloop()
 
 

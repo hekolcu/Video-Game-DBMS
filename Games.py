@@ -1,7 +1,7 @@
 import tkinter as tk
 
 
-class BriefGame:
+class Games:
 
     def __init__(self, master: tk.Tk, games: dict, current_game=0):
         self.games = games
@@ -24,8 +24,7 @@ class BriefGame:
             column=0
         )
 
-        # start of current game information frame
-
+        # start of game information frame
         info_font = ("Helvetica", 15, "bold")
         info_bg = "red"
 
@@ -39,6 +38,7 @@ class BriefGame:
             pady=10
         )
 
+        # start of title
         self.title_label = tk.Label(
             self.info_frame,
             text="Title:",
@@ -62,7 +62,35 @@ class BriefGame:
             row=0,
             column=1
         )
+        # end of title
 
+        # start of description
+        self.description_label = tk.Label(
+            self.info_frame,
+            text="Description:",
+            bg=info_bg,
+            width=10,
+            font=info_font
+        )
+        self.description_label.grid(
+            row=0,
+            column=0
+        )
+
+        self.game_title = tk.Label(
+            self.info_frame,
+            text=self.games[self.current_game]["description"],
+            bg=info_bg,
+            width=30,
+            font=info_font
+        )
+        self.game_title.grid(
+            row=0,
+            column=1
+        )
+        # end of description
+
+        # start of genre
         self.genre_label = tk.Label(
             self.info_frame,
             text="Genre:",
@@ -84,7 +112,9 @@ class BriefGame:
             row=1,
             column=1
         )
+        # end of genre
 
+        # start of rating
         self.rating_label = tk.Label(
             self.info_frame,
             text="Rating:",
@@ -106,10 +136,10 @@ class BriefGame:
             row=2,
             column=1
         )
-
+        # end of rating
         # end of current game information
-        # start of button frame
 
+        # start of button frame
         button_font = ("Helvetica", 20, "italic")
 
         self.button_frame = tk.Frame(
@@ -135,19 +165,6 @@ class BriefGame:
             column=0
         )
 
-        self.more_detail_button = tk.Button(
-            self.button_frame,
-            text="Show",
-            bg="green",
-            font=button_font,
-            width=7,
-            command=self.more_detail_button_action
-        )
-        self.more_detail_button.grid(
-            row=0,
-            column=1
-        )
-
         self.edit_button = tk.Button(
             self.button_frame,
             text="Edit",
@@ -158,7 +175,7 @@ class BriefGame:
         )
         self.edit_button.grid(
             row=0,
-            column=2
+            column=1
         )
 
         self.next_button = tk.Button(
@@ -172,7 +189,7 @@ class BriefGame:
         )
         self.next_button.grid(
             row=0,
-            column=3
+            column=2
         )
         # end of button frame
 
@@ -186,11 +203,6 @@ class BriefGame:
         if self.current_game > 0:
             self.current_game -= 1
             self.update_info_frame()
-
-    def more_detail_button_action(self):
-        from DetailedGames import DetailedGames
-        self.mainframe.destroy()
-        DetailedGames(self.master, self.games, self.current_game)
 
     def edit_button_action(self):
         from EditGame import EditGame
@@ -207,4 +219,3 @@ class BriefGame:
         self.game_rating.config(
             text=self.games[self.current_game]["rating"]
         )
-
