@@ -1,4 +1,5 @@
 import tkinter as tk
+import webbrowser
 
 
 class Games:
@@ -7,10 +8,11 @@ class Games:
         self.games = games
         self.current_game = current_game
         self.master = master
+        bg_color = "#808080"
         self.mainframe = tk.Frame(
             self.master,
             width=800,
-            bg="red"
+            bg=bg_color
         )
         self.mainframe.grid()
 
@@ -18,16 +20,18 @@ class Games:
             self.mainframe,
             text="Video Games",
             font=("Courier", 30, "bold"),
-            bg="red"
+            fg="white",
+            bg=bg_color
         )
         self.title.grid(
             row=0,
-            column=0
+            column=0,
+            padx=5
         )
 
         # start of game information frame
         info_font = ("Helvetica", 15, "bold")
-        info_bg = "red"
+        info_bg = bg_color
 
         self.info_frame = tk.Frame(
             self.mainframe,
@@ -39,194 +43,142 @@ class Games:
             pady=10
         )
 
-        # start of title
-        self.title_label = tk.Label(
+        # start of title frame
+        self.title_frame = tk.Frame(
             self.info_frame,
-            text="Title:",
-            bg=info_bg,
-            font=info_font
+            bg="yellow"
         )
-        self.title_label.grid(
+        self.title_frame.grid(
             row=0,
             column=0,
-            sticky="e",
-            padx=20
+            rowspan=2
         )
 
+        # start of title
         self.game_title = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
+            self.title_frame,
+            bg="yellow",
+            fg="#232069",
+            font=("Helvetica", 20, "bold", "underline"),
+            width=20,
+            height=3,
+            wraplength=415
         )
         self.game_title.grid(
             row=0,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
+            column=0,
+            columnspan=2,
+            sticky="w"
         )
         # end of title
 
-        # start of description
-        self.description_label = tk.Label(
-            self.info_frame,
-            text="Description:",
+        # start of rating
+        self.game_rating = tk.Label(
+            self.title_frame,
             bg=info_bg,
             font=info_font
         )
-        self.description_label.grid(
+        self.game_rating.grid(
             row=1,
             column=0,
-            sticky="e",
-            padx=20
+            padx=5,
+            sticky="w"
         )
+        # end of rating
+        # end of title frame
 
+        # start of creators
+        self.game_creators = tk.Text(
+            self.info_frame,
+            bg=info_bg,
+
+            cursor="arrow",
+            width=25,
+            height=5
+        )
+        self.game_creators.grid(
+            row=0,
+            column=1,
+            sticky="w"
+        )
+        # end of creators
+
+        # start of platform
+        self.game_platform = tk.Label(
+            self.info_frame,
+            bg=info_bg,
+            font=info_font
+        )
+        self.game_platform.grid(
+            row=1,
+            column=1,
+            sticky="w"
+        )
+        # end of platform
+
+        # start of description
         self.game_description = tk.Label(
             self.info_frame,
             bg=info_bg,
             font=info_font,
-            wraplength=500
+            wraplength=400
         )
         self.game_description.grid(
-            row=1,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
+            row=2,
+            column=0,
+            rowspan=6,
+            sticky="w"
         )
         # end of description
 
-        # start of genre
-        self.genre_label = tk.Label(
+        # start of side information frame
+        self.side_information_frame = tk.Frame(
             self.info_frame,
-            text="Genre:",
+            bg=info_bg
+        )
+        self.side_information_frame.grid(
+            row=2,
+            column=1
+        )
+
+        # start of genre
+        self.game_genre = tk.Label(
+            self.side_information_frame,
             bg=info_bg,
             font=info_font
         )
-        self.genre_label.grid(
-            row=2,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_genre = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_genre.grid(
-            row=2,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
+        self.game_genre.pack(
+            side=tk.TOP,
+            anchor=tk.W
         )
         # end of genre
 
-        # start of platform
-        self.platform_label = tk.Label(
-            self.info_frame,
-            text="Platform:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.platform_label.grid(
-            row=3,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_platform = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_platform.grid(
-            row=3,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
-        )
-        # end of platform
-
         # start of mode
-        self.mode_label = tk.Label(
-            self.info_frame,
-            text="Mode:",
+        self.game_mode = tk.Label(
+            self.side_information_frame,
             bg=info_bg,
             font=info_font
         )
-        self.mode_label.grid(
-            row=4,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_mode = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_mode.grid(
-            row=4,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
+        self.game_mode.pack(
+            side=tk.TOP,
+            anchor=tk.W
         )
         # end of mode
 
         # start of restrictions
-        self.restrictions_label = tk.Label(
-            self.info_frame,
-            text="Restrictions:",
+        self.game_restrictions = tk.Label(
+            self.side_information_frame,
             bg=info_bg,
             font=info_font
         )
-        self.restrictions_label.grid(
-            row=5,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_restrictions = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_restrictions.grid(
-            row=5,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
+        self.game_restrictions.pack(
+            side=tk.TOP,
+            anchor=tk.W
         )
         # end of restrictions
+        # end of side information frame
 
         # start of requirements
-        self.requirements_label = tk.Label(
-            self.info_frame,
-            text="Requirements:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.requirements_label.grid(
-            row=6,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
         self.game_requirements = tk.Label(
             self.info_frame,
             bg=info_bg,
@@ -234,57 +186,14 @@ class Games:
             wraplength=500
         )
         self.game_requirements.grid(
-            row=6,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
+            row=3,
+            column=0,
+            columnspan=2,
+            sticky="w"
         )
         # end of requirements
 
-        # start of year
-        self.year_label = tk.Label(
-            self.info_frame,
-            text="Year:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.year_label.grid(
-            row=7,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_year = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_year.grid(
-            row=7,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
-        )
-        # end of year
-
         # start of popularity
-        self.popularity_label = tk.Label(
-            self.info_frame,
-            text="Popularity:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.popularity_label.grid(
-            row=8,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
         self.game_popularity = tk.Label(
             self.info_frame,
             bg=info_bg,
@@ -300,49 +209,7 @@ class Games:
         )
         # end of popularity
 
-        # start of rating
-        self.rating_label = tk.Label(
-            self.info_frame,
-            text="Rating:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.rating_label.grid(
-            row=9,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_rating = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_rating.grid(
-            row=9,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
-        )
-        # end of rating
-
         # start of link
-        self.link_label = tk.Label(
-            self.info_frame,
-            text="Link:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.link_label.grid(
-            row=10,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
         self.game_link = tk.Label(
             self.info_frame,
             bg=info_bg,
@@ -358,44 +225,15 @@ class Games:
         )
         # end of link
 
-        # start of creators
-        self.creators_label = tk.Label(
-            self.info_frame,
-            text="Creators:",
-            bg=info_bg,
-            font=info_font
-        )
-        self.creators_label.grid(
-            row=11,
-            column=0,
-            sticky="e",
-            padx=20
-        )
-
-        self.game_creators = tk.Label(
-            self.info_frame,
-            bg=info_bg,
-            font=info_font,
-            wraplength=500
-        )
-        self.game_creators.grid(
-            row=11,
-            column=1,
-            pady=15,
-            sticky="w",
-            padx=20
-        )
-        # end of creators
-
         self.update_info_frame()
         # end of current game information
 
         # start of button frame
-        button_font = ("Helvetica", 20, "italic")
+        button_font = ("Helvetica", 15, "bold")
 
         self.button_frame = tk.Frame(
             self.mainframe,
-            bg="purple"
+            bg="gray"
         )
         self.button_frame.grid(
             row=2,
@@ -405,10 +243,13 @@ class Games:
         self.previous_button = tk.Button(
             self.button_frame,
             text="<",
-            bg="blue",
+            bg="black",
             fg="white",
             font=button_font,
-            width=7,
+            #width=7,
+            activebackground="lightgray",
+            activeforeground="blue",
+            cursor="hand2",
             command=self.previous_button_action
         )
         self.previous_button.grid(
@@ -421,21 +262,26 @@ class Games:
             text="Edit",
             bg="red",
             font=button_font,
-            width=7,
+            #width=7,
+            cursor="hand2",
             command=self.edit_button_action
         )
         self.edit_button.grid(
             row=0,
-            column=1
+            column=1,
+            padx=10
         )
 
         self.next_button = tk.Button(
             self.button_frame,
             text=">",
-            bg="blue",
+            bg="black",
             fg="white",
             font=button_font,
-            width=7,
+            #width=7,
+            cursor="hand2",
+            activebackground="lightgray",
+            activeforeground="blue",
             command=self.next_button_action
         )
         self.next_button.grid(
@@ -462,7 +308,10 @@ class Games:
 
     def update_info_frame(self):
         self.game_title.config(
-            text=self.games[self.current_game]["title"]
+            text=self.games[self.current_game]["title"] + " (" + str(self.games[self.current_game]["year"]) + ")"
+        )
+        self.game_title.bind(
+            "<Button-1>", lambda e: webbrowser.open_new(self.games[self.current_game]["link"])
         )
         self.game_description.config(
             text=self.games[self.current_game]["description"]
@@ -482,22 +331,21 @@ class Games:
         self.game_requirements.config(
             text=self.games[self.current_game]["requirements"]
         )
-        self.game_year.config(
-            text=self.games[self.current_game]["year"]
-        )
         self.game_popularity.config(
             text=self.games[self.current_game]["popularity"]
         )
         self.game_rating.config(
-            text=
-            str(self.games[self.current_game]["rating"]) + " (" +
+            text=str(self.games[self.current_game]["rating"]) + " (" +
             str(self.games[self.current_game]["ratingCount"]) +
             " ratings)"
         )
         self.game_link.config(
             text=self.games[self.current_game]["link"]
         )
-        self.game_creators.config(
-            text=self.games[self.current_game]["creators"]
-        )
-
+        creators = str(self.games[self.current_game]["creators"]).split(";")
+        self.game_creators.config(state="normal")
+        self.game_creators.delete(1.0, tk.END)
+        self.game_creators.insert(tk.END, "by\n")
+        for creator in creators:
+            self.game_creators.insert(tk.END, creator.strip())
+        self.game_creators.config(state="disabled")
