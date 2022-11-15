@@ -19,7 +19,7 @@ games = [
             "description": "Pokémon is a Japanese media franchise managed by The Pokémon Company",
             "year": 1996,
             "genre": "Adventure;Role-playing (RPG)",
-            "popularity": "2 million active players",
+            "popularity": "Not Very Actives",
             "platform": "Nintendo 3DS;Game Boy",
             "mode": "Singleplayer;Multiplayer",
             "restrictions": "13+",
