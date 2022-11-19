@@ -61,11 +61,11 @@ class Games:
         # start of title
         self.game_title = tk.Label(
             self.title_frame,
-            bg="#808080",
-            fg="#000033",
+            bg="black",
+            fg="white",
             font=("Courier", 20, "bold", "underline"),
             width=35,
-            height=3,
+            height=0,
             wraplength=515,
             cursor="hand2"
         )
@@ -111,7 +111,7 @@ class Games:
         # start of platform
         self.game_platform = tk.Label(
             self.info_frame,
-            bg="#808080",
+            bg=bg_color,
             fg="white",
             font=("Courier", 11, "bold"),
             width=35
@@ -125,7 +125,7 @@ class Games:
         # start of description
         self.game_description = tk.Label(
             self.info_frame,
-            bg="#808080",
+            bg=bg_color,
             fg="white",
             font=("Courier", 15, "bold"),
             wraplength=500,
@@ -194,7 +194,7 @@ class Games:
         self.game_popularity = tk.Label(
             self.side_information_frame,
             font=("Courier", 11, "bold"),
-            bg="#808080",
+            bg=bg_color,
             fg="white",
             width=35,
             anchor=tk.W
@@ -253,17 +253,33 @@ class Games:
             column=0
         )
 
+        self.add_button = tk.Button(
+            self.button_frame,
+            text="Add",
+            bg="red",
+            font=button_font,
+            cursor="hand2",
+            width=5,
+            command=self.add_button_action
+        )
+        self.add_button.grid(
+            row=0,
+            column=1,
+            padx=10
+        )
+
         self.edit_button = tk.Button(
             self.button_frame,
             text="Edit",
             bg="red",
             font=button_font,
             cursor="hand2",
+            width=5,
             command=self.edit_button_action
         )
         self.edit_button.grid(
             row=0,
-            column=1,
+            column=2,
             padx=10
         )
 
@@ -280,7 +296,7 @@ class Games:
         )
         self.next_button.grid(
             row=0,
-            column=2
+            column=3
         )
         # end of button frame
 
@@ -298,7 +314,10 @@ class Games:
     def edit_button_action(self):
         from EditGame import EditGame
         self.mainframe.destroy()
-        EditGame(self.master, self.games, self.current_game)
+        EditGame(self.master, self.games[self.current_game]["id"], self.gamesdb_con)
+
+    def add_button_action(self):
+        print(self)
 
     def update_info_frame(self):
         self.game_title.config(
@@ -308,7 +327,7 @@ class Games:
             "<Button-1>", lambda e: webbrowser.open_new(self.games[self.current_game]["link"])
         )
         self.game_description.config(
-            text=self.games[self.current_game]["description"]
+            text="Description: " + self.games[self.current_game]["description"]
         )
         self.game_genre.config(
             text=self.games[self.current_game]["genre"]
@@ -323,7 +342,7 @@ class Games:
             text=self.games[self.current_game]["restrictions"]
         )
         self.game_requirements.config(
-            text=self.games[self.current_game]["requirements"]
+            text="Minimum Requirements: " + self.games[self.current_game]["requirements"]
         )
         self.game_popularity.config(
             text=self.games[self.current_game]["popularity"]
@@ -336,7 +355,7 @@ class Games:
         creators = str(self.games[self.current_game]["creators"]).split(";")
         self.game_creators.config(state="normal")
         self.game_creators.delete(1.0, tk.END)
-        self.game_creators.insert(tk.END, "by\n")
+        self.game_creators.insert(tk.END, "By ")
         for creator in creators:
             self.game_creators.insert(tk.END, creator.strip() + "\n")
         self.game_creators.config(state="disabled")
