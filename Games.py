@@ -312,12 +312,14 @@ class Games:
             self.update_info_frame()
 
     def edit_button_action(self):
-        from EditGame import EditGame
+        from EditAddGame import EditAddGame
         self.mainframe.destroy()
-        EditGame(self.master, self.games[self.current_game]["id"], self.gamesdb_con)
+        EditAddGame(self.master, self.gamesdb_con, self.games[self.current_game]["id"])
 
     def add_button_action(self):
-        print(self)
+        from EditAddGame import EditAddGame
+        self.mainframe.destroy()
+        EditAddGame(self.master, self.gamesdb_con)
 
     def update_info_frame(self):
         self.game_title.config(

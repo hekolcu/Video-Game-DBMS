@@ -3,14 +3,18 @@ import tkinter as tk
 from Games import Games
 
 
-class EditGame:
+class EditAddGame:
 
-    def __init__(self, master, current_game_id: int, gamesdb_con: sqlite3.Connection):
+    def __init__(self, master, gamesdb_con: sqlite3.Connection, current_game_id: int = -1):
         self.gamesdb_con = gamesdb_con
-        self.game = self.gamesdb_con.cursor().execute("SELECT * FROM GAMES WHERE id = ?", [current_game_id]).fetchone()
         self.current_game_id = current_game_id
-        print(self.game["title"])
-        print(self.current_game_id)
+        self.game = None
+        if current_game_id != -1:
+            self.game = self.gamesdb_con.cursor().execute(
+                "SELECT * FROM GAMES WHERE id = ?",
+                [self.current_game_id]
+            ).fetchone()
+
         self.master = master
 
         self.mainframe = tk.Frame(
@@ -461,14 +465,21 @@ class EditGame:
         # end of ratingCount
         # end of game frame
 
-        self.add_button = tk.Button(
+        self.add_edit_button = tk.Button(
             self.mainframe,
-            text="Add",
             bg="black",
             fg="white",
-            command=self.add
+            command=self.add_edit
         )
-        self.add_button.grid(
+        if self.current_game_id != -1:
+            self.add_edit_button.config(
+                text="Edit"
+            )
+        else:
+            self.add_edit_button.config(
+                text="Add"
+            )
+        self.add_edit_button.grid(
             row=2,
             column=0
         )
@@ -484,37 +495,11 @@ class EditGame:
             row=2,
             column=1
         )
+        self.fill_data()
 
-    def add(self):
-        if len(self.game_title.get("1.0", "end-1c")) > 0 and \
-                len(self.game_description.get("1.0", "end-1c")) > 0 and \
-                self.game_year.get().isdigit() and \
-                len(self.game_genre.get("1.0", "end-1c")) > 0 and \
-                len(self.game_popularity.get("1.0", "end-1c")) > 0 and \
-                len(self.game_platform.get("1.0", "end-1c")) > 0 and \
-                len(self.game_mode.get("1.0", "end-1c")) > 0 and \
-                len(self.game_restrictions.get("1.0", "end-1c")) > 0 and \
-                len(self.game_requirements.get("1.0", "end-1c")) > 0 and \
-                len(self.game_link.get("1.0", "end-1c")) > 0 and \
-                len(self.game_creators.get("1.0", "end-1c")) > 0 and \
-                isfloat(self.game_rating.get()) and \
-                self.game_rating_count.get().isdigit():
-            self.gamesdb_con.cursor().execute(
-                "INSERT INTO GAMES("
-                "title, "
-                "description, "
-                "year, "
-                "genre, "
-                "popularity, "
-                "platform, "
-                "mode, "
-                "restrictions, "
-                "requirements, "
-                "link, "
-                "creators, "
-                "rating, "
-                "ratingCount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [
+    def add_edit(self):
+        sql = ""
+        gamedata = [
                     self.game_title.get("1.0", "end-1c"),
                     self.game_description.get("1.0", "end-1c"),
                     int(self.game_year.get()),
@@ -529,8 +514,72 @@ class EditGame:
                     float(self.game_rating.get()),
                     int(self.game_rating_count.get())
                 ]
-            )
+        if self.current_game_id == -1:
+            sql = "INSERT INTO GAMES(" \
+                  "title, " \
+                  "description, " \
+                  "year, " \
+                  "genre, " \
+                  "popularity, " \
+                  "platform, " \
+                  "mode, " \
+                  "restrictions, " \
+                  "requirements, " \
+                  "link, " \
+                  "creators, " \
+                  "rating, " \
+                  "ratingCount" \
+                  ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        else:
+            sql = "UPDATE GAMES SET " \
+                  "title = ?, " \
+                  "description = ?, " \
+                  "year = ?, " \
+                  "genre = ?, " \
+                  "popularity = ?, " \
+                  "platform = ?, " \
+                  "mode = ?, " \
+                  "restrictions = ?, " \
+                  "requirements = ?, " \
+                  "link = ?, " \
+                  "creators = ?, " \
+                  "rating = ?, " \
+                  "ratingCount = ? " \
+                  "WHERE id = ?"
+            gamedata.append(self.current_game_id)
+
+        if len(self.game_title.get("1.0", "end-1c")) > 0 and \
+                len(self.game_description.get("1.0", "end-1c")) > 0 and \
+                self.game_year.get().isdigit() and \
+                len(self.game_genre.get("1.0", "end-1c")) > 0 and \
+                len(self.game_popularity.get("1.0", "end-1c")) > 0 and \
+                len(self.game_platform.get("1.0", "end-1c")) > 0 and \
+                len(self.game_mode.get("1.0", "end-1c")) > 0 and \
+                len(self.game_restrictions.get("1.0", "end-1c")) > 0 and \
+                len(self.game_requirements.get("1.0", "end-1c")) > 0 and \
+                len(self.game_link.get("1.0", "end-1c")) > 0 and \
+                len(self.game_creators.get("1.0", "end-1c")) > 0 and \
+                isfloat(self.game_rating.get()) and \
+                self.game_rating_count.get().isdigit():
+            self.gamesdb_con.cursor().execute(sql, gamedata)
             self.gamesdb_con.commit()
+            self.back_to_brief()
+
+    def fill_data(self):
+        if self.current_game_id != -1:
+            self.game_title.insert(tk.INSERT, self.game["title"])
+            self.game_description.insert(tk.INSERT, self.game["description"])
+            self.game_year.insert(tk.INSERT, self.game["year"])
+            self.game_genre.insert(tk.INSERT, self.game["genre"])
+            self.game_popularity.insert(tk.INSERT, self.game["popularity"])
+            self.game_platform.insert(tk.INSERT, self.game["platform"])
+            self.game_mode.insert(tk.INSERT, self.game["mode"])
+            self.game_restrictions.insert(tk.INSERT, self.game["restrictions"])
+            self.game_requirements.insert(tk.INSERT, self.game["requirements"])
+            self.game_link.insert(tk.INSERT, self.game["link"])
+            self.game_creators.insert(tk.INSERT, self.game["creators"])
+            self.game_rating.insert(tk.INSERT, self.game["rating"])
+            self.game_rating_count.insert(tk.INSERT, self.game["ratingCount"])
 
     def back_to_brief(self):
         self.mainframe.destroy()
