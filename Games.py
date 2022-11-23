@@ -304,7 +304,8 @@ class Games:
         )
         self.rating_option_menu.grid(
             row=0,
-            column=0
+            column=0,
+            padx=10
         )
 
         self.give_rating_button = tk.Button(
@@ -313,12 +314,12 @@ class Games:
             bg="red",
             font=button_font,
             cursor="hand2",
-            width=5,
+            # width=5,
             command=self.give_rating_action
         )
         self.give_rating_button.grid(
-            row=1,
-            column=0
+            row=0,
+            column=1
         )
         # end of give rating frame
 
@@ -371,7 +372,7 @@ class Games:
                                     float(self.games[self.current_game]["rating"]) +
                                     int(self.new_rating_sv.get())
                             ) / (float(self.games[self.current_game]["ratingCount"]) + 1)
-                    ).__round__(3),
+                    ).__round__(2),
                     self.games[self.current_game]["id"]
                 ]
             )

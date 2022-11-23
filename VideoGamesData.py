@@ -12,7 +12,7 @@ games = [
             "link": "https://www.counter-strike.net",
             "creators": "Jess Cliffe",
             "rating": 3.8,
-            "ratingCount": "309"
+            "ratingCount": "56"
         },
         {
             "title": "Pokémon Red/Green",
@@ -27,6 +27,6 @@ games = [
             "link": "https://www.pokemon.com/",
             "creators": "Satoshi Tajiri;Ken Sugimori;Junichi Masuda",
             "rating": 4.1,
-            "ratingCount": "872"
+                "ratingCount": "20"
         }
     ]
