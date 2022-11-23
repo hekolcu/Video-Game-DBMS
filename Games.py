@@ -281,6 +281,47 @@ class Games:
             padx=10
         )
 
+        # start of give rating frame
+        self.give_rating_frame = tk.Frame(
+            self.button_frame,
+            bg="black"
+        )
+        self.give_rating_frame.grid(
+            row=0,
+            column=3,
+            padx=10
+        )
+
+        self.new_rating_sv = tk.StringVar(
+            self.give_rating_frame
+        )
+        self.new_rating_sv.set("Give a rating")
+
+        self.rating_option_menu = tk.OptionMenu(
+            self.give_rating_frame,
+            self.new_rating_sv,
+            *["1", "2", "3", "4", "5"]
+        )
+        self.rating_option_menu.grid(
+            row=0,
+            column=0
+        )
+
+        self.give_rating_button = tk.Button(
+            self.give_rating_frame,
+            text="Give Rating",
+            bg="red",
+            font=button_font,
+            cursor="hand2",
+            width=5,
+            command=self.give_rating_action
+        )
+        self.give_rating_button.grid(
+            row=1,
+            column=0
+        )
+        # end of give rating frame
+
         self.next_button = tk.Button(
             self.button_frame,
             text=">",
@@ -294,7 +335,7 @@ class Games:
         )
         self.next_button.grid(
             row=0,
-            column=3
+            column=4
         )
         # end of button frame
 
@@ -318,6 +359,27 @@ class Games:
         from EditAddGame import EditAddGame
         self.mainframe.destroy()
         EditAddGame(self.master, self.gamesdb_con)
+
+    def give_rating_action(self):
+        try:
+            self.gamesdb_con.cursor().execute(
+                "UPDATE GAMES SET ratingCount = ratingCount + 1, rating = ? WHERE id = ?",
+                [
+                    (
+                            (
+                                    float(self.games[self.current_game]["ratingCount"]) *
+                                    float(self.games[self.current_game]["rating"]) +
+                                    int(self.new_rating_sv.get())
+                            ) / (float(self.games[self.current_game]["ratingCount"]) + 1)
+                    ).__round__(3),
+                    self.games[self.current_game]["id"]
+                ]
+            )
+            self.gamesdb_con.commit()
+            self.games = self.gamesdb_con.cursor().execute("SELECT * FROM GAMES").fetchall()
+            self.update_info_frame()
+        except ValueError:
+            print("Choose a rating")
 
     def update_info_frame(self):
         self.game_title.config(
