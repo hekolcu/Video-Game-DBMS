@@ -1,8 +1,6 @@
-import sqlite3
 import tkinter as tk
 import webbrowser
 import sqlite3
-# from sqlite3 import Connection
 
 
 class Games:

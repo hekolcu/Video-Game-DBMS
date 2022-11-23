@@ -465,10 +465,25 @@ class EditAddGame:
         # end of ratingCount
         # end of game frame
 
+        # start of button frame
+        button_font = ("Courier", 15, "bold")
+
+        self.button_frame = tk.Frame(
+            self.game_frame,
+            bg="black"
+        )
+        self.button_frame.grid(
+            row=13,
+            column=0,
+            columnspan=2
+        )
+
         self.add_edit_button = tk.Button(
-            self.mainframe,
-            bg="black",
-            fg="white",
+            self.button_frame,
+            bg="red",
+            font=button_font,
+            cursor="hand2",
+            width=5,
             command=self.add_edit
         )
         if self.current_game_id != -1:
@@ -480,26 +495,56 @@ class EditAddGame:
                 text="Add"
             )
         self.add_edit_button.grid(
-            row=2,
-            column=0
+            row=0,
+            column=0,
+            padx=10
         )
 
+        # start of back button
         self.back_button = tk.Button(
-            self.mainframe,
+            self.button_frame,
             text="Back",
-            bg="black",
-            fg="white",
+            bg="red",
+            font=button_font,
+            cursor="hand2",
+            width=5,
             command=self.back_to_brief
         )
-        self.back_button.grid(
-            row=2,
-            column=1
-        )
+        if self.current_game_id != -1:
+            # start of delete button
+            self.delete_game_button = tk.Button(
+                self.button_frame,
+                text="Delete",
+                bg="red",
+                font=button_font,
+                cursor="hand2",
+                width=6,
+                command=self.delete_video_game
+            )
+            self.delete_game_button.grid(
+                row=0,
+                column=1,
+                padx=10
+            )
+            # end of delete button
+
+            self.back_button.grid(
+                row=0,
+                column=2,
+                padx=10
+            )
+        else:
+            self.back_button.grid(
+                row=0,
+                column=1,
+                padx=10
+            )
+        # end of back button
+        # end of button frame
         self.fill_data()
 
     def add_edit(self):
-        sql = ""
-        gamedata = [
+        game_data = [
                     self.game_title.get("1.0", "end-1c"),
                     self.game_description.get("1.0", "end-1c"),
                     int(self.game_year.get()),
@@ -546,7 +591,7 @@ class EditAddGame:
                   "rating = ?, " \
                   "ratingCount = ? " \
                   "WHERE id = ?"
-            gamedata.append(self.current_game_id)
+            game_data.append(self.current_game_id)
 
         if len(self.game_title.get("1.0", "end-1c")) > 0 and \
                 len(self.game_description.get("1.0", "end-1c")) > 0 and \
@@ -561,9 +606,14 @@ class EditAddGame:
                 len(self.game_creators.get("1.0", "end-1c")) > 0 and \
                 isfloat(self.game_rating.get()) and \
                 self.game_rating_count.get().isdigit():
-            self.gamesdb_con.cursor().execute(sql, gamedata)
+            self.gamesdb_con.cursor().execute(sql, game_data)
             self.gamesdb_con.commit()
             self.back_to_brief()
+
+    def delete_video_game(self):
+        self.gamesdb_con.cursor().execute("DELETE FROM GAMES WHERE id = ?", [self.current_game_id])
+        self.gamesdb_con.commit()
+        self.back_to_brief()
 
     def fill_data(self):
         if self.current_game_id != -1:

@@ -3,7 +3,7 @@ import tkinter as tk
 from Games import Games
 
 
-def fetchDB():
+def fetch_db():
     gamesdb_con = sqlite3.connect("./gamesDB.db")
     gamesdb_con.row_factory = sqlite3.Row
     gamesdb_cursor = gamesdb_con.cursor()
@@ -63,7 +63,7 @@ def main():
     root = tk.Tk()
     root.title("Video Games DBMS")
     root.resizable(False, False)
-    Games(root, fetchDB())
+    Games(root, fetch_db())
     root.mainloop()
 
 
